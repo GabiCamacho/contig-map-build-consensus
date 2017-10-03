@@ -145,6 +145,8 @@ def getfastq():
 
     taxa = list(set(taxa))
     loci = list(set(loci))
+
+    print("There are {} loci in an INCOMPLETE matrix".format(len(loci)))
     
     if args.phyluce:
         incomplete_fasta.close()
@@ -167,13 +169,14 @@ def printoutincomplete(taxa, loci, d):
     incomplete_conf.write("\n".join(taxa))
     incomplete_conf.write("\n[Loci]\n")
     incomplete_conf.write("\n".join(loci))
+
     incomplete_matrix = open(args.output + '/phyluce/incomplete_matrix.incomplete', 'w')
-    
-    for t, l in d.items():
-        incomplete_matrix.write("[" + t + "]\n")
-        incomplete_matrix.write("\n".join(l))
-        incomplete_matrix.write("\n")
-    
+    for t in d.items():
+        incomplete_matrix.write("[" + str(t[0]) + "]\n")
+        #find missing loci using set overlaps, and print to file. 
+        missing_loci = set(d[t[0]])^set(loci)
+        for missing_loci in set(missing_loci):
+            incomplete_matrix.write(missing_loci + '\n')
     incomplete_matrix.close()
     incomplete_conf.close()
 
