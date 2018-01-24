@@ -220,17 +220,25 @@ def printoutfasta(r, counts, f, e, taxa):
 
 # --------
 
+
 def is_fasta(filename):
     with open(filename, "r") as handle:
         fasta = SeqIO.parse(handle, "fasta")
-        return any(fasta)  
+        try:
+            any(fasta)
+            return(True)
+        except:
+            return(False)
         # False when `fasta` is empty, i.e. wasn't a FASTA file
 
 def is_fastq(filename):
     with open(filename, "r") as handle:
         fastq = SeqIO.parse(handle, "fastq")
-        return any(fastq)  
-        # False when `fasta` is empty, i.e. wasn't a FASTA file
+        try:
+            any(fastq)
+            return(True)
+        except:
+            return(False)
 
 # -------
 
